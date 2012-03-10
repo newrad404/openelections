@@ -1,11 +1,13 @@
 {% extends "issues/base-public.html" %}
 
 {% block content %}
-    <!--<div style = 'background:#dedede;margin:1em;padding:2em;'>
-        <div align="center" style="font-size:18px;">  <strong>Vote in the Spring Quarter General Election.</strong></div>
-    The ballot opens at 12:01 AM on Thursday, April 7 and closes at 11:59 PM on Friday, April 8. Vote at
-        <a href="http://ballot.stanford.edu">http://ballot.stanford.edu</a>.
-    </div>-->
+    <div style = 'background:#dedede;margin:1em;padding:2em;'>
+        <div align="center" style="font-size:18px;">  <strong>Petitions have closed.</strong></div>
+    Petitions and Declarations of Intent
+        closed at 5 PM on Friday, March 9. The Elections Commission is currently validating all petitions and will
+        post updates at
+        <a href="http://elections.stanford.edu">http://elections.stanford.edu</a>. GSC candidates may still declare intent.
+    </div>
 
 {% regroup issues|dictsort:"kind_sort" by kind_name as issues_list %}
 

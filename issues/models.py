@@ -108,7 +108,7 @@ class Issue(models.Model):
         return "%s: %s" % (self.kind, self.title)
 
     def can_declare(self):
-        return True
+        return False
 
     def get_typed(self):
         issue_class = kinds_classes.get(self.kind, Issue)
@@ -138,7 +138,7 @@ class Issue(models.Model):
         return True
 
     def petition_open(self):
-        return True #not self.petition_validated
+        return False #not self.petition_validated
 
     def show_petition_results(self):
         return False

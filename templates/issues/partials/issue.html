@@ -50,6 +50,11 @@
             <a href="{% url petitions.views.detail issue.slug %}">&raquo; View/sign petition</a>
         </dt>
     {% endif %}
+    {% if issue.needs_petition and issue.public and not issue.petition_open %}
+        <dt>
+            Petitions closed. <a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a>
+        </dt>
+    {% endif %}
 </dl>
 
 <br style="clear:both">
