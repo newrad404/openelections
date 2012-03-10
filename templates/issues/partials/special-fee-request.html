@@ -54,7 +54,9 @@
             Petitions closed. <a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a>
         </dt>
     {% endif %}
-    {% else %}
+{% endif %}
+{% if not issue.needs_petition %}
+
     <dt>No petition required!</dt>
 {% endif %}
 
