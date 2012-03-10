@@ -49,7 +49,7 @@
         </dt>
     <br/>
     {% endif %}
-    {% if issue.public and not issue.petition_open %}
+    {% if issue.public and not issue.petition_open and issue.needs_petition %}
         <dt>
             Petitions closed. <a href="{% url petitions.views.detail issue.slug %}">&raquo; View petition</a>
         </dt>
