@@ -91,3 +91,5 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 WEBAUTH_SHARED_SECRET = 'a2d24bf589b1dea3d83f317019e2ff83bf430b8d1c2a3f741dbf7d72f196d8cf6a6d113de356dc77'
 WEBAUTH_URL = 'https://www.stanford.edu/~trusheim/cgi-bin/wa-authenticate-test.php'
+
+STUDENT_CSV = '' # FILL ME!

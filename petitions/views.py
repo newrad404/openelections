@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from django.http import HttpResponseRedirect, QueryDict, HttpResponse
+from django.http import HttpResponseRedirect, QueryDict, HttpResponse, Http404, HttpResponseNotFound
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -15,6 +15,7 @@ from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import openelections.constants as oeconstants
+from petitions.student_loader import loadStudentDict
 
 def index(request):
     return HttpResponseRedirect('/issues/petitioning')
@@ -292,3 +293,44 @@ def validate_results(request):
     return render_to_response('petitions/validate_results.html',
                                     {'results': vresults
                                   }, context_instance=RequestContext(request))
+
+@permission_required('signature.can_add')
+def validate_students(request):
+    vresults = []
+    try:
+        real_students = loadStudentDict()
+    except Exception as e:
+        return HttpResponseNotFound("Student CSV cannot be loaded. Check it's in the right place, and that it has columns named 'SUNetID' and 'Class Level' :(.<br /> Error: %s" % e)
+
+    for issue in Issue.objects.filter(public=True):
+        signatures = Signature.objects.filter(issue=issue)
+        signed_num = len(signatures)
+        valid_num = 0
+        invalid_num = 0
+        invalid_set = []
+
+        for signature in signatures:
+            if signature.sunetid in real_students:
+                valid_num += 1
+            else:
+                invalid_num += 1
+                invalid_set.append(signature.sunetid)
+
+        vresults.append((issue,'Online',signed_num,valid_num,invalid_num,', '.join(invalid_set)))
+
+        signatures = PaperSignature.objects.filter(issue=issue)
+        signed_num = len(signatures)
+        valid_num = 0
+        invalid_num = 0
+        invalid_set = []
+        for signature in signatures:
+            if signature.sunetid in real_students:
+                valid_num += 1
+            else:
+                invalid_num += 1
+                invalid_set.append(signature.sunetid)
+
+        vresults.append((issue,'Paper',signed_num,valid_num,invalid_num,', '.join(invalid_set)))
+
+    return render_to_response('petitions/validate_students.html',
+            {'results': vresults }, context_instance=RequestContext(request))

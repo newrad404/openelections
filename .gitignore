@@ -9,3 +9,4 @@ data/
 ballots/
 ignore/
 settings_production.py
+students.csv

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Verification results</h2>
+<table><tr>
+    <td>Name</td><td>Online/Paper</td><td>Total</td><td>Confirmed Student</td><td>Invalid</td><td>Invalid list</td>
+</tr>
+{% for result in results %}
+    <tr><td>{{ result.0.title }}</td><td>{{ result.1 }}</td><td>{{ result.2 }}</td><td>{{ result.3 }}</td><td>{{ result.4 }}</td><td>{{ result.5 }}</td></tr>
+{% endfor %}
+</table>
+{% endblock %}
