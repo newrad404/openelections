@@ -278,6 +278,9 @@ class SpecialFeeRequest(FeeRequest):
     def kind_sort(self):
         return 3
 
+    def can_declare(self):
+        return True
+
 class Slate(Issue):
     class Meta:
         proxy = True
