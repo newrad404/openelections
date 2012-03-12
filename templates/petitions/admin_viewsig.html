@@ -3,11 +3,11 @@
 {% block content %}
 
 <h1>Admin: View Signatures</h1>
-<p>You are viewing signatures for <strong>{{ issue }}</strong>.</p>
+<p>You are viewing paper signatures analysis for <strong>{{ issue }}</strong>.</p>
 
-<p>Considered {{ total }} signatures. <a href="{% url openelections.petitions.views.add_signatures issue_slug=issue.slug %}">Add more</a>. </p>
+<p>Considered {{ total }} signatures from paper petitions. <a href="{% url openelections.petitions.views.add_signatures issue_slug=issue.slug %}">Add more</a>. </p>
 
-    <p><strong>{{ problem_set.0|length }} duplicated online. {{ problem_set.1|length }} duplicated on paper.</strong> {{ problem_set.2|length }} found clean.</p>
+    <p><strong>{{ problem_set.0|length }} duplicated between paper and online. {{ problem_set.1|length }} duplicated on paper.</strong> {{ problem_set.2|length }} found clean.</p>
 
     <p><strong>Duplicated Online:</strong><br />
     {% for problem in problem_set.0 %}
