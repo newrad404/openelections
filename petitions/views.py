@@ -225,9 +225,8 @@ def setup_validate(request):
         for signature in selected:
             addValidationNeeded(issue,signature,'paper')
 
-    # Senator
-    # Special Fees
-    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_SPECFEE).filter(public=True):
+    # Senators
+    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_US).filter(public=True):
 
         # online signatures
         osigs = Signature.objects.filter(issue=issue)
