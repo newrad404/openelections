@@ -176,8 +176,6 @@ def setup_validate(request):
 
     # Exec
     for issue in Issue.objects.filter(kind=oeconstants.ISSUE_EXEC).filter(public=True):
-        if not issue.needs_petition():
-            continue
 
         # online signatures: undergrad
         osigs = Signature.objects.filter(issue=issue).filter(electorate__in=[electorate_ug])
@@ -208,8 +206,6 @@ def setup_validate(request):
 
     # Class Presidents
     for issue in Issue.objects.filter(kind=oeconstants.ISSUE_CLASSPRES).filter(public=True):
-        if not issue.needs_petition():
-            continue
 
         # online signatures
         osigs = Signature.objects.filter(issue=issue)
@@ -232,8 +228,6 @@ def setup_validate(request):
     # Senator
     # Special Fees
     for issue in Issue.objects.filter(kind=oeconstants.ISSUE_SPECFEE).filter(public=True):
-        if not issue.needs_petition():
-            continue
 
         # online signatures
         osigs = Signature.objects.filter(issue=issue)
