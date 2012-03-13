@@ -260,7 +260,7 @@ def addValidationNeeded(issue,signature,type='online'):
 def validate_send(request,start):
     PER_BATCH = 100
 
-    signatures = ValidationResult.objects.filter(pk__gt=start)[:PER_BATCH]
+    signatures = ValidationResult.objects.filter(sent=False).filter(pk__gt=start)[:PER_BATCH]
     response = ""
     for signature in signatures:
         success,error = sendValidationMessage(signature)
@@ -279,8 +279,8 @@ smtpConnection = None
 def sendValidationMessage(signature):
     global smtpConnection
     fromAddr = "Adam Adler (ASSU Elections Commission) <ajadler@elections.stanford.edu>"
-    login = "trusheim"
-    password = ""
+    login = "info@elections.stanford.edu"
+    password = "hello1"
 
     toAddress = signature.sunetid + "@stanford.edu"
 
