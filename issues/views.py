@@ -90,7 +90,9 @@ def manage_new_specialfee(request):
     form = NewSpecialFeeForm(instance=new_issue)
     if request.method == 'POST':
         form = NewSpecialFeeForm(request.POST,request.FILES,instance=new_issue)
-        if form.is_valid() and new_issue.can_declare():
+        if form.is_valid():
+            if not new_issue.can_declare():
+                return HttpResponseForbidden("Cannot declare this issue")
             form.save()
             return HttpResponseRedirect(reverse('openelections.issues.views.manage_index'))
     return render_to_response('issues/manage/new_fee.html', {'new_issue': new_issue, 'form': form}, context_instance=RequestContext(request))
