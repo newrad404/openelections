@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, QueryDict, HttpResponse, Http404, 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from issues.models import Electorate
 from openelections.petitions.models import Signature
 from openelections.petitions.forms import SignatureForm
 from openelections.issues.models import Issue
@@ -138,46 +139,133 @@ def randomString(length):
 @permission_required('signature.can_add')
 def setup_validate(request):
     TEST_PERCENT = 0.05
-    for issue in Issue.objects.all():
-        if not issue.public:
+
+#--Select 20% of grad petitions for exec races
+#--Select 10% of non-grad petitions for exec races
+#--Select 15 people for each Senator
+#--Select 10% for each class president
+#--Select 20% for each paper special fees petition
+#--Select 10% for each online special fees petition
+
+    electorate_ug = Electorate.objects.get(slug="undergrad")
+    electorate_coterm = Electorate.objects.get(slug="coterm")
+    electorate_grad = Electorate.objects.get(slug="graduate")
+
+    # Special Fees
+    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_SPECFEE).filter(public=True):
+        if not issue.needs_petition():
             continue
 
-        #online signatures
+        # online signatures
         osigs = Signature.objects.filter(issue=issue)
-        numosigs = len(osigs)
-        if numosigs <= 1:
+        if len(osigs) <= 1:
             continue
-        num_tested = int(math.floor(numosigs * TEST_PERCENT))
+        num_tested = int(math.ceil(float(len(osigs)) * .10))
         selected = random.sample(osigs,num_tested)
         for signature in selected:
-            validation = ValidationResult()
-            validation.sunetid = signature.sunetid
-            validation.issue = signature.issue
-            validation.location = 'online'
-            validation.key = randomString(64)
-            validation.save()
+            addValidationNeeded(issue,signature,'online')
 
-        #online signatures
+        # paper sigs
         psigs = PaperSignature.objects.filter(issue=issue)
-        numpsigs = len(psigs)
-        if numpsigs <= 1:
+        if len(psigs) <= 1:
             continue
-        num_tested = int(math.floor(numpsigs * TEST_PERCENT))
+        num_tested = int(math.ceil(float(len(psigs)) * .20))
         selected = random.sample(psigs,num_tested)
         for signature in selected:
-            validation = ValidationResult()
-            validation.sunetid = signature.sunetid
-            validation.issue = signature.issue
-            validation.location = 'paper'
-            validation.key = randomString(64)
-            validation.save()
-    return HttpResponse("Completed")
+            addValidationNeeded(issue,signature,'paper')
+
+    # Exec
+    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_EXEC).filter(public=True):
+        if not issue.needs_petition():
+            continue
+
+        # online signatures: undergrad
+        osigs = Signature.objects.filter(issue=issue).filter(electorate__in=electorate_ug)
+        if len(osigs) <= 1:
+            continue
+        num_tested = int(math.ceil(float(len(osigs)) * .10))
+        selected = random.sample(osigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'online')
+
+        # online signatures: grad
+        osigs = Signature.objects.filter(issue=issue).filter(electorate__in=[electorate_grad,electorate_coterm])
+        if len(osigs) <= 1:
+            continue
+        num_tested = int(math.ceil(float(len(osigs)) * .20))
+        selected = random.sample(osigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'online')
+
+        # paper sigs
+        psigs = PaperSignature.objects.filter(issue=issue)
+        if len(psigs) <= 1:
+            continue
+        num_tested = int(math.ceil(float(len(psigs)) * .20))
+        selected = random.sample(psigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'paper')
+
+    # Class Presidents
+    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_CLASSPRES).filter(public=True):
+        if not issue.needs_petition():
+            continue
+
+        # online signatures
+        osigs = Signature.objects.filter(issue=issue)
+        if len(osigs) <= 1:
+            continue
+        num_tested = int(math.ceil(float(len(osigs)) * .10))
+        selected = random.sample(osigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'online')
+
+        # paper sigs
+        psigs = PaperSignature.objects.filter(issue=issue)
+        if len(psigs) <= 1:
+            continue
+        num_tested = int(math.ceil(float(len(psigs)) * .10))
+        selected = random.sample(psigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'paper')
+
+    # Senator
+    # Special Fees
+    for issue in Issue.objects.filter(kind=oeconstants.ISSUE_SPECFEE).filter(public=True):
+        if not issue.needs_petition():
+            continue
+
+        # online signatures
+        osigs = Signature.objects.filter(issue=issue)
+        if len(osigs) <= 1:
+            continue
+        num_tested = 15
+        selected = random.sample(osigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'online')
+
+        # paper sigs
+        psigs = PaperSignature.objects.filter(issue=issue)
+        if len(psigs) <= 1:
+            continue
+        num_tested = 15
+        selected = random.sample(psigs,num_tested)
+        for signature in selected:
+            addValidationNeeded(issue,signature,'paper')
+
+    return HttpResponse("Completed setup.")
+
+def addValidationNeeded(issue,signature,type='online'):
+    validation = ValidationResult()
+    validation.sunetid = signature.sunetid
+    validation.issue = issue
+    validation.location = type
+    validation.key = randomString(64)
+    validation.save()
 
 @permission_required('signature.can_add')
 def validate_send(request,start):
     PER_BATCH = 40
-
-    
 
     signatures = ValidationResult.objects.filter(pk__gt=start)[:PER_BATCH]
     response = ""
@@ -197,9 +285,9 @@ def validate_send(request,start):
 smtpConnection = None
 def sendValidationMessage(signature):
     global smtpConnection
-    fromAddr = "Stephen Trusheim (ASSU Elections Commission) <tru@elections.stanford.edu>"
-    login = "info@elections.stanford.edu"
-    password = "hello1"
+    fromAddr = "Adam Adler (ASSU Elections Commission) <ajadler@elections.stanford.edu>"
+    login = "trusheim"
+    password = ""
 
     toAddress = signature.sunetid + "@stanford.edu"
 
@@ -219,7 +307,7 @@ def sendValidationMessage(signature):
     to complete this validation within 24 hours.</strong> Your support is essential in this process.</p><br />
     <p>The ASSU Elections Commission is always open to hear your comments or concerns about the elections process. Please contact us at
     elections@elections.stanford.edu, or online at http://elections.stanford.edu.</p>
-    <p>Cheers,<br/>Stephen Trusheim<br />ASSU Elections Commissioner<br />tru@elections.stanford.edu / (650) 741-3337</p>
+    <p>Cheers,<br/>Adam Adler<br />ASSU Elections Commissioner<br />ajadler@elections.stanford.edu / (650) 741-3337</p>
 
     <hr />
     <p>This is an official communication from the ASSU Elections Commission: elections@elections.stanford.edu.</p>
@@ -231,7 +319,7 @@ def sendValidationMessage(signature):
     message.attach(messagePart)
 
     if smtpConnection is None:
-        smtpConnection = SMTP("smtp.gmail.com",587,timeout=10)
+        smtpConnection = SMTP("smtp.stanford.edu",587,timeout=10)
         smtpConnection.starttls()
         smtpConnection.login(login,password)
     try:
