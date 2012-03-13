@@ -258,12 +258,12 @@ def addValidationNeeded(issue,signature,type='online'):
 
 @permission_required('signature.can_add')
 def validate_send(request,start):
-    PER_BATCH = 40
+    PER_BATCH = 100
 
     signatures = ValidationResult.objects.filter(pk__gt=start)[:PER_BATCH]
     response = ""
     for signature in signatures:
-        success = sendValidationMessage(signature)
+        success,error = sendValidationMessage(signature)
         if success:
             response += " / Successfully sent to " + signature.sunetid
             signature.sent = True
@@ -317,10 +317,10 @@ def sendValidationMessage(signature):
         smtpConnection.login(login,password)
     try:
         smtpConnection.sendmail(fromAddr,toAddress,message.as_string())
-        return True
-    except Exception,e:
+        return True, None
+    except Exception as e:
         smtpConnection = None
-        return False
+        return False,e
 
 
 def validate(request,key):
