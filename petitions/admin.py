@@ -11,6 +11,9 @@ class SignatureAdmin(admin.ModelAdmin):
     list_filter = ('issue', 'electorate')
     search_fields = ('sunetid', 'name')
 
+class ValidationAdmin(admin.ModelAdmin):
+    list_per_page = 5000
+
 admin.site.register(Signature, SignatureAdmin)
 admin.site.register(PaperSignature)
-admin.site.register(ValidationResult)
+admin.site.register(ValidationResult,ValidationAdmin)

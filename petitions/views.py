@@ -180,7 +180,7 @@ def setup_validate(request):
             continue
 
         # online signatures: undergrad
-        osigs = Signature.objects.filter(issue=issue).filter(electorate__in=electorate_ug)
+        osigs = Signature.objects.filter(issue=issue).filter(electorate__in=[electorate_ug])
         if len(osigs) <= 1:
             continue
         num_tested = int(math.ceil(float(len(osigs)) * .10))
