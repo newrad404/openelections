@@ -240,7 +240,7 @@ def setup_validate(request):
         if len(osigs) <= 1:
             continue
         num_tested = 15
-        selected = random.sample(osigs,num_tested)
+        selected = random.sample(osigs,min([num_tested,len(osigs)]))
         for signature in selected:
             addValidationNeeded(issue,signature,'online')
 
@@ -249,7 +249,7 @@ def setup_validate(request):
         if len(psigs) <= 1:
             continue
         num_tested = 15
-        selected = random.sample(psigs,num_tested)
+        selected = random.sample(psigs,min([num_tested,len(psigs)]))
         for signature in selected:
             addValidationNeeded(issue,signature,'paper')
 
