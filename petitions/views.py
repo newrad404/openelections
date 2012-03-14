@@ -269,7 +269,7 @@ def validate_send(request,start):
             signature.sent = True
             signature.save()
         else:
-            response += "<br />FAILED TO SEND to " + signature.sunetid + "<br />"
+            response += "<br />FAILED TO SEND to " + signature.sunetid + "... reason: " + error + "<br />"
     last = signatures[len(signatures)-1].pk
     url = reverse('openelections.petitions.views.validate_send',None,[last])
     response = "<a href = '%s'>Send next</a><br />" % url + response
