@@ -354,6 +354,8 @@ def validate(request,key):
 @permission_required('signature.can_add')
 def validate_results(request):
     vresults = []
+    comments = []
+
     for issue in Issue.objects.all():
         if not issue.public:
             continue
@@ -366,13 +368,16 @@ def validate_results(request):
             num += 1
             if verification.is_valid():
                 num_valid += 1
+                if verification.extra:
+                    comments.append(verification)
             if verification.completed:
                 num_submitted += 1
                 if not verification.is_valid():
                     invalid.append(verification)
         vresults.append((issue,num,num_submitted,num_valid,invalid))
     return render_to_response('petitions/validate_results.html',
-                                    {'results': vresults
+                                    {'results': vresults,
+                                     'comments': comments,
                                   }, context_instance=RequestContext(request))
 
 @permission_required('signature.can_add')

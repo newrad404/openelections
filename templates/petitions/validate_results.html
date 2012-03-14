@@ -12,4 +12,8 @@
         {% endfor %}
 {% endfor %}
 </table>
+    
+{% for sig in comments %}
+    <p><strong>{{ sig.sunetid }} on {{ sig.issue.title }}:</strong> {{ sig.extra }}</p>
+{% endfor %}
 {% endblock %}
