@@ -119,6 +119,9 @@ def manage_edit(request, issue_slug):
     sunetid = request.user.webauth_username
     if not issue.sunetid_can_manage(sunetid):
         return HttpResponseForbidden()
+
+    if not issue.can_edit():
+        return HttpResponse("Cannot edit. Contact the Elections Commission if you are receiving this message in error.")
     
     form = None
     if request.method == 'POST':

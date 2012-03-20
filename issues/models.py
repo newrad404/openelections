@@ -146,6 +146,9 @@ class Issue(models.Model):
     def statement_is_public(self):
         return True
 
+    def can_edit(self):
+        return True
+
     def position_description(self):
         return POSITION_DESCRIPTIONS.get(self.kind, None)
 
@@ -448,6 +451,9 @@ class Referendum(Candidate):
 
     def petition_electorate_names(self):
         return ('undergrad', 'coterm', 'graduate')
+
+    def can_edit(self):
+        return not self.public
 
     def kind_sort(self):
         return 90
