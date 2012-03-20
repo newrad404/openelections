@@ -424,6 +424,12 @@ class Referendum(Candidate):
     def can_declare(self):
         return False
 
+    def needs_petition(self):
+        return True
+
+    def petition_open(self):
+        return True
+
     def name_and_office(self):
         return "%s, a referendum" \
                % (self.title)
@@ -439,6 +445,9 @@ class Referendum(Candidate):
 
     def elected_name(self):
         return "Referendum"
+
+    def petition_electorate_names(self):
+        return ('undergrad', 'coterm', 'graduate')
 
     def kind_sort(self):
         return 90

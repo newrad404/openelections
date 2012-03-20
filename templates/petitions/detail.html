@@ -53,11 +53,15 @@ window.location.hash+='#sign-form';
 {% if form %}
 <h2>Sign petition<a id="sign-form"></a></h2>
 <form action="{% url petitions.views.sign issue.slug %}" method="post">
+
+    {% ifnotequal issue.kind "Ref" %}
     <p>You're signing a petition for <strong>{{ issue.name_and_office }}</strong>. Your signature indicates your support for this {{ issue.kind_name }} and helps them qualify for ballot placement in the ASSU Election on April 12&ndash;13. <a href="http://elections.stanford.edu/candidates/">Learn more about the {{ issue.elected_name }} role and how to get involved.</a></p>
-    
-    <p>Your name, SUNet ID, and enrollment status will be visible to this {{ issue.kind_name }} if you sign this petition{% ifequal issue.kind "SF" %}, along with those of the other {{ issue.signatures.count }} signers{% endifequal %}. If you aren't <strong>{{ sunetid }}</strong>, close your browser to log out. See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> or <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions. </p>
+    {% else %}
+    <p>You're signing a petition for a referendum. <strong><a href="{% url issues.views.detail issue.slug %}">View the text of this referendum</a></strong>. Your signature indicates your support for this referendum and will help it qualify for ballot placement in the ASSU Election on April 12&ndash;13.</p>
+    {% endifnotequal %}
+    <p>Your name, SUNet ID, and enrollment status will be visible on this {{ issue.kind_name }} if you sign this petition{% ifequal issue.kind "SF" %}, along with those of the other {{ issue.signatures.count }} signers{% endifequal %}. If you aren't <strong>{{ sunetid }}</strong>, close your browser to log out. See the <a href="http://elections.stanford.edu/petition-guide">full petitions guide</a> or <a href="http://elections.stanford.edu/contact">contact the Elections Commission</a> if you have any questions. </p>
     <br/>
-    <p style="font-weight:bold">View <a href="{% url issues.views.detail issue.slug %}">more information about this petition</a>.
+    <p style="font-weight:bold">View <a href="{% url issues.views.detail issue.slug %}">more information about this petition</a> {% ifequal issue.kind "Ref" %}including the statement(s) placed on the ballot{% endifequal  %}.
         {% ifequal issue.kind "SF" %}<br/><br />The budget and account statement of this group are <a href="{% url issues.views.detail issue.slug %}">available here</a>. The Elections Commission recommends that you review the budgets of this group before you sign this petition.</p>{% endifequal %}
     <br />
     {{ form.non_field_errors }}
