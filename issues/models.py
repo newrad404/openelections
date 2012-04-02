@@ -140,6 +140,9 @@ class Issue(models.Model):
     def petition_open(self):
         return False #not self.petition_validated
 
+    def all_petitions_closed(self):
+        return True
+
     def show_petition_results(self):
         return False
 
