@@ -486,23 +486,24 @@ class SMSACandidate(Candidate):
         name_map = {
             # SMSA
             'SMSA-P': "President",
-            'SMSA-VPO': "Vice President of Operations",
-            'SMSA-VPA': "Vice President of Advocacy",
+            'SMSA-VPO': "Operations Vice President",
+            'SMSA-VPA': "Advocacy Vice President",
             'SMSA-T': "Treasurer",
 
             'SMSA-CCAP-PC': "CCAP Preclinical",
             'SMSA-CCAP-C': "CCAP Clinical",
-            'SMSA-CCAP-MD': "CCAP MD / PhD",
+            'SMSA-CCAP-MSTP': "CCAP MSTP",
             'SMSA-CCAP-YO': "CCAP Year-Off",
 
             'SMSA-SC-PC': "Social Chair Preclinical",
             'SMSA-SC-C': "Social Chair Clinical",
-            'SMSA-SC-YO': "Social Chair Year-Off",
 
             'SMSA-Mentorship-PC': "Mentorship & Wellness Chair Preclinical",
             'SMSA-Mentorship-C': "Mentorship & Wellness Chair Clinical",
-            'SMSA-Alumni': "Alumni Chair",
-            'SMSA-Prospective': "Prospective Student Recruitment Chair"
+            'SMSA-Alumni-PC': "Alumni Chair - Preclinical",
+            'SMSA-Alumni-C': "Alumni Chair - Clinical",
+
+            'SMSA-Advisory': "Clinical Student Advisory Committee"
         }
         return 'SMSA ' + name_map.get(self.kind, 'Unknown')
 
@@ -515,17 +516,17 @@ class SMSACandidate(Candidate):
 
             'SMSA-CCAP-PC': 310,
             'SMSA-CCAP-C': 311,
-            'SMSA-CCAP-MD': 312,
+            'SMSA-CCAP-MSTP': 312,
             'SMSA-CCAP-YO': 313,
 
             'SMSA-SC-PC': 320,
             'SMSA-SC-C': 321,
-            'SMSA-SC-YO': 322,
 
             'SMSA-Mentorship-PC': 323,
             'SMSA-Mentorship-C': 324,
-            'SMSA-Alumni': 325,
-            'SMSA-Prospective': 326,
+            'SMSA-Alumni-PC': 325,
+            'SMSA-Alumni-C': 326,
+            'SMSA-Advisory': 327,
         }
         return priority_map.get(self.kind, 400)
 
