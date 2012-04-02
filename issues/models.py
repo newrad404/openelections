@@ -282,7 +282,7 @@ class SpecialFeeRequest(FeeRequest):
         return 3
 
     def can_declare(self):
-        return True
+        return False
 
 class Slate(Issue):
     class Meta:
