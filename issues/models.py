@@ -392,7 +392,7 @@ class GSCCandidate(Candidate):
         proxy = True
 
     def can_declare(self):
-        return True
+        return False
 
     def district(self):
         districts = self.electorates.filter(slug__in=Electorate.GSC_DISTRICTS)
