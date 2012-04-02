@@ -247,6 +247,10 @@ class EditSpecialFeeRequestForm(EditIssueForm):
 
 ## SMSA
 class NewSMSACandidateForm(NewCandidateForm):
+    qual_fields = [
+        'I wish to run for this position in the Stanford Medical Student Association (SMSA).',
+
+        ]
     class Meta:
         model = SMSACandidate
         fields = ('title', 'kind', 'name1', 'electorates', 'sunetid1', 'slug')
