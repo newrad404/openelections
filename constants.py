@@ -33,8 +33,10 @@ SMSA_OFFICES = (
 
     ('SMSA-Mentorship-PC', "Mentorship & Wellness Chair Preclinical"),
     ('SMSA-Mentorship-C', "Mentorship & Wellness Chair Clinical"),
-    ('SMSA-Alumni', "Alumni Chair"),
-    ('SMSA-Prospective', "Prospective Student Recruitment Chair")
+    ('SMSA-Alumni-PC', "Alumni Chair (Preclinical)"),
+    ('SMSA-Alumni-C', "Alumni Chair (Clinical)"),
+
+    ('SMSA-Advisory', "Clinical Student Advisory Committee")
 )
 
 ISSUE_TYPES.extend(SMSA_OFFICES)
