@@ -592,6 +592,7 @@ kinds_classes = {
 
     'SMSA-Mentorship-PC': SMSACandidate,
     'SMSA-Mentorship-C': SMSACandidate,
-    'SMSA-Alumni': SMSACandidate,
-    'SMSA-Prospective': SMSACandidate,
+    'SMSA-Alumni-PC': SMSACandidate,
+    'SMSA-Alumni-C': SMSACandidate,
+    'SMSA-Advisory': SMSACandidate,
 }
