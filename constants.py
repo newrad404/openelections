@@ -81,9 +81,9 @@ VOTE_NO = 1
 VOTE_YES = 2
 
 VOTES_YNA = (
-    (VOTE_AB, 'Abstain'),
-    (VOTE_NO, 'No'),
     (VOTE_YES, 'Yes'),
+    (VOTE_NO, 'No'),
+    (VOTE_AB, 'Abstain'),
 )
 
 
