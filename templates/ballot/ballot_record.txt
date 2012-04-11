@@ -11,7 +11,8 @@ ASSU Exec:
 1. {{ ballot.vote_exec1 }} (write-in: {{ ballot.vote_exec1_writein|default:"none" }})
 2. {{ ballot.vote_exec2 }} (write-in: {{ ballot.vote_exec2_writein|default:"none" }})
 3. {{ ballot.vote_exec3 }} (write-in: {{ ballot.vote_exec3_writein|default:"none" }})
-
+4. {{ ballot.vote_exec4 }} (write-in: {{ ballot.vote_exec4_writein|default:"none" }})
+{% if ballot.is_undergrad %}
 ---------------------------------------
 ASSU Undergrad Senate:
 {% for s in ballot.votes_senate.all %}- {{ s }}
@@ -23,10 +24,8 @@ ASSU Undergrad {{ ballot.undergrad_class_year.name }} Class Presidents:
 1. {{ ballot.vote_classpres1 }} (write-in: {{ ballot.vote_classpres1_writein|default:"none" }})
 2. {{ ballot.vote_classpres2 }} (write-in: {{ ballot.vote_classpres2_writein|default:"none" }})
 3. {{ ballot.vote_classpres3 }} (write-in: {{ ballot.vote_classpres3_writein|default:"none" }})
-4. {{ ballot.vote_classpres4 }} (write-in: {{ ballot.vote_classpres4_writein|default:"none" }})
-5. {{ ballot.vote_classpres5 }} (write-in: {{ ballot.vote_classpres5_writein|default:"none" }})
-
-
+{% endif %}
+{% if ballot.is_grad %}
 ---------------------------------------
 ASSU Grad Student Council {{ ballot.gsc_district.name }} District:
 {% for s in ballot.votes_gsc_district.all %}- {{ s }}
@@ -38,6 +37,7 @@ ASSU Grad Student Council At-Large:
 {% for s in ballot.votes_gsc_atlarge.all %}- {{ s }}
 {% empty %}(none){% endfor %}
 (write-ins: {{ ballot.votes_gsc_atlarge_writein|default:"none" }})
+{% endif %}
 
 ---------------------------------------
 ASSU Special Fees:
@@ -50,17 +50,16 @@ NO on Special Fee requests:
 {% empty %}(none){% endfor %}
 
 ABSTAIN on all Special Fee requests not listed
-
+{% if ballot.is_grad %}
 ---------------------------------------
-Measure A - Advisory Question on ROTC
-{% if ballot.vote_referendum == 'a' %}a. I support the reinstatement of ROTC at Stanford University.{% endif %}{% if ballot.vote_referendum == 'b' %}b. I oppose the reinstatement of ROTC at Stanford University.{% endif %}{% if ballot.vote_referendum == 'c' %}c. I choose to abstain.{% endif %}
-
----------------------------------------
+Graduate Student Council Advisory Question
+{% if ballot.vote_survey == 'a' %}a. Strongly agree.{% endif %}{% if ballot.vote_survey == 'b' %}b. Agree some of the time.{% endif %}{% if ballot.vote_survey == 'c' %}c. I choose to abstain.{% endif %}{% if ballot.vote_survey == 'd' %}d. Disagree some of the time.{% endif %}{% if ballot.vote_survey == 'e' %}e. Strongly disagree.{% endif %}{% if ballot.vote_survey == 'f' %}f.Not Applicable (e.g. I don't have an advisor){% endif %}
+{% endif %}
 {% if ballot.is_smsa %}
+---------------------------------------
 SMSA:
 Your SMSA votes have been recorded.
 {% endif %}
-
 ---------------------------------------
 IP address: {{ request.META.REMOTE_ADDR }}
 Last updated: {{ ballot.date_updated }}

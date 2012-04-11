@@ -41,33 +41,33 @@ class Ballot(models.Model):
     votes_specfee_ab = models.ManyToManyField(SpecialFeeRequest, related_name='votes_ab', blank=True)
 
 
-    N_EXEC_VOTES = 3
+    N_EXEC_VOTES = 4
     vote_exec1 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec1')
     vote_exec2 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec2')
     vote_exec3 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec3')
-    #vote_exec4 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec4')
+    vote_exec4 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec4')
     #vote_exec5 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec5')
     #vote_exec6 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec6')
     vote_exec1_writein = models.CharField(max_length=75, blank=True)
     vote_exec2_writein = models.CharField(max_length=75, blank=True)
     vote_exec3_writein = models.CharField(max_length=75, blank=True)
-    #vote_exec4_writein = models.CharField(max_length=75, blank=True)
+    vote_exec4_writein = models.CharField(max_length=75, blank=True)
     #vote_exec5_writein = models.CharField(max_length=75, blank=True)
     #vote_exec6_writein = models.CharField(max_length=75, blank=True)
 
-    N_CLASSPRES_VOTES = 5
+    N_CLASSPRES_VOTES = 3
     vote_classpres1 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres1')
     vote_classpres2 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres2')
     vote_classpres3 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres3')
-    vote_classpres4 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres4')
-    vote_classpres5 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres5')
+    #vote_classpres4 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres4')
+    #vote_classpres5 = models.ForeignKey(ClassPresidentSlate, blank=True, null=True, related_name='votes_classpres5')
     vote_classpres1_writein = models.CharField(max_length=75, blank=True)
     vote_classpres2_writein = models.CharField(max_length=75, blank=True)
     vote_classpres3_writein = models.CharField(max_length=75, blank=True)
-    vote_classpres4_writein = models.CharField(max_length=75, blank=True)
-    vote_classpres5_writein = models.CharField(max_length=75, blank=True)
+    #vote_classpres4_writein = models.CharField(max_length=75, blank=True)
+    #vote_classpres5_writein = models.CharField(max_length=75, blank=True)
 
-    vote_referendum = models.CharField(max_length=1,blank=True,null=True)
+    vote_survey = models.CharField(max_length=1,blank=True,null=True)
 
     vote_smsa_pres = models.ForeignKey(SMSACandidate, related_name='votes_smsa_pres', blank=True, null=True)
     vote_smsa_vpo = models.ForeignKey(SMSACandidate, related_name='votes_smsa_vpo', blank=True, null=True)
@@ -83,12 +83,11 @@ class Ballot(models.Model):
 
     votes_smsa_sc_pc = models.ManyToManyField(SMSACandidate, related_name='votes_smsa_sc_pc', blank=True)
     votes_smsa_sc_c = models.ManyToManyField(SMSACandidate, related_name='votes_smsa_sc_c', blank=True)
-    vote_smsa_sc_yo = models.ForeignKey(SMSACandidate, related_name='votes_smsa_yo', blank=True, null=True)
 
     vote_smsa_mw_pc = models.ForeignKey(SMSACandidate, related_name='votes_smsa_mw_pc', blank=True, null=True)
     vote_smsa_mw_c = models.ForeignKey(SMSACandidate, related_name='votes_smsa_mw_c', blank=True, null=True)
-    vote_smsa_alumni = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni', blank=True, null=True)
-    vote_smsa_prospective = models.ForeignKey(SMSACandidate, related_name='votes_smsa_prospective', blank=True, null=True)
+    vote_smsa_alumni_pc = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_pc', blank=True, null=True)
+    vote_smsa_alumni_c = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_c', blank=True, null=True)
 
     def needs_ballot_choice(self):
         if not self.is_grad() and not self.is_undergrad():

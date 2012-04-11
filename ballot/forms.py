@@ -153,8 +153,8 @@ def ballot_form_factory(ballot):
             return self.cleaned_data
 
         def clean_vote_referendum(self):
-            if not self.cleaned_data['vote_referendum']:
-                raise forms.ValidationError("You must submit a vote on Measure A - Advisory Question on ROTC or choose to abstain.")
+            if not self.cleaned_data['vote_referendum'] and self.is_grad():
+                raise forms.ValidationError("You must submit a vote on the advisor survey, or choose to abstain.")
             return self.cleaned_data['vote_referendum']
         
         def save(self, commit=True):            
@@ -202,8 +202,8 @@ def ballot_form_factory(ballot):
         del _BallotForm.base_fields['vote_classpres1']
         del _BallotForm.base_fields['vote_classpres2']
         del _BallotForm.base_fields['vote_classpres3']
-        del _BallotForm.base_fields['vote_classpres4']
-        del _BallotForm.base_fields['vote_classpres5']
+        #del _BallotForm.base_fields['vote_classpres4']
+        #del _BallotForm.base_fields['vote_classpres5']
 
     
     if ballot.is_grad():
@@ -215,11 +215,24 @@ def ballot_form_factory(ballot):
         gsc_atlarge_qs = GSCCandidate.objects.filter(kind=c.ISSUE_GSC).order_by('?').all()
         _BallotForm.base_fields['votes_gsc_atlarge'] = GSCAtLargeCandidatesField(queryset=gsc_atlarge_qs, required=False)
         _BallotForm.base_fields['votes_gsc_atlarge_writein'] = forms.CharField(required=False, widget=forms.Textarea(attrs=dict(rows=2, cols=40)))
+        ## referendum: Measure A
+        surveychoices = (
+            ('a', "a. Strongly agree."),
+            ('b', "b. Agree some of the time."),
+            ('c', "c. Neutral."),
+            ('d', "d. Disagree some of the time."),
+            ('e', "e. Strongly disagree."),
+            ('f', "f. Not Applicable (e.g. I don't have an advisor)"),
+
+            )
+        _BallotForm.base_fields['vote_survey'] = forms.ChoiceField(choices=surveychoices, label="Choices", required=False, initial=ballot.vote_survey, widget=forms.RadioSelect)
+
     else:
         del _BallotForm.base_fields['votes_gsc_district']
         del _BallotForm.base_fields['votes_gsc_district_writein']
         del _BallotForm.base_fields['votes_gsc_atlarge']
         del _BallotForm.base_fields['votes_gsc_atlarge_writein']
+        del _BallotForm.base_fields['vote_survey']
     
     if ballot.is_smsa():
         _BallotForm.smsa = True
@@ -236,12 +249,11 @@ def ballot_form_factory(ballot):
             ('vote_smsa_ccap_yo', 'SMSA-CCAP-YO'),
 
             # two social chairs are multi
-            ('vote_smsa_sc_yo', 'SMSA-SC-YO'),
 
             ('vote_smsa_mw_pc', 'SMSA-Mentorship-PC'),
             ('vote_smsa_mw_c', 'SMSA-Mentorship-C'),
-            ('vote_smsa_alumni', 'SMSA-Alumni'),
-            ('vote_smsa_prospective', 'SMSA-Prospective'),
+            ('vote_smsa_alumni_pc', 'SMSA-Alumni-PC'),
+            ('vote_smsa_alumni_c', 'SMSA-Alumni-C'),
         )
 
         # set querysets
@@ -250,7 +262,7 @@ def ballot_form_factory(ballot):
             qs = kinds_classes[kind].objects.filter(kind=kind).all()
             sel = None
             if len(qs) == 1: # default to selected if only one candidate
-                setattr(ballot, f_id, qs[0])
+                pass #setattr(ballot, f_id, qs[0])
             _BallotForm.base_fields[f_id] = SMSACandidatesChoiceField(queryset=qs, required=False, initial=sel)
         
         # smsa positions with multiple votes
@@ -292,15 +304,6 @@ def ballot_form_factory(ballot):
         f.issue = sf
         _BallotForm.base_fields[f_id] = f
 
-
-    ## referendum: Measure A
-    refchoices = (
-                ('a', "a. I support the reinstatement of ROTC at Stanford University."),
-                ('b', "b. I oppose the reinstatement of ROTC at Stanford University."),
-                ('c', "c. I choose to abstain."),
-        )
-    _BallotForm.base_fields['vote_referendum'] = forms.ChoiceField(choices=refchoices, label="Choices", required=False, initial=ballot.vote_referendum, widget=forms.RadioSelect)
-    
     return _BallotForm
 
 

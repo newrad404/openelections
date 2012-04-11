@@ -1,8 +1,9 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.conf import settings
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import render_to_response, get_object_or_404
+from django.utils import simplejson
 from openelections import constants as oe_constants
 from openelections.issues.models import Issue, ExecutiveSlate, ClassPresidentSlate
 from openelections.ballot.forms import ballot_form_factory, BallotElectorateForm
@@ -15,13 +16,13 @@ from django.db import transaction
 def get_voter_id(request):
     return make_voter_id(request.user.webauth_username)
 
-def make_issues_json():
-    return ""
+def make_issues_json(request):
+#    return ""
 
-#    issues = {}
-#    for o in Issue.objects.all():
-#        issues[str(o.pk)] = { 'statement': render_to_string('ballot/info.html', {'issue': o.get_typed(), 'detail': True, 'hidepdfs': True}) }
-#    return simplejson.dumps(issues)
+    issues = {}
+    for o in Issue.objects.all():
+        issues[str(o.pk)] = { 'statement': render_to_string('ballot/info.html', {'issue': o.get_typed(), 'detail': True, 'hidepdfs': True}) }
+    return HttpResponse(simplejson.dumps(issues))
 # put a static JS file in hosting to avoid generation every time
     
 def get_exec_slates():
@@ -61,14 +62,13 @@ def index(request):
     record.type = "start"
     record.save()
 
-    return render_to_response('ballot/ballot.html', {'ballotform': ballotform, 'ballot': ballot, 'issues_json': make_issues_json(), 'cp_slates': get_cp_slates(ballot), 'csac_members': get_csac_members(), 'exec_slates': get_exec_slates(),'sunetid': sunetid},
+    return render_to_response('ballot/ballot.html', {'ballotform': ballotform, 'ballot': ballot, 'cp_slates': get_cp_slates(ballot), 'csac_members': get_csac_members(), 'exec_slates': get_exec_slates(),'sunetid': sunetid},
                               context_instance=RequestContext(request))
 
 @transaction.commit_on_success
 @login_required
 def choose_ballot(request):
     sunetid = request.user.webauth_username
-    print request.META
     ballot = get_object_or_404(Ballot, voter_id=get_voter_id(request))
     form = None
     if request.method == 'POST':
@@ -128,7 +128,7 @@ def vote_all(request):
             record.type = "failed-vote"
             record.details = str(ballotform.errors)
             record.save()
-            return render_to_response('ballot/ballot.html', {'ballotform': ballotform, 'ballot': ballot, 'issues_json': make_issues_json(), 'cp_slates': get_cp_slates(ballot), 'csac_members': get_csac_members(),  'exec_slates': get_exec_slates(),'is_submitted': True, 'sunetid': sunetid},
+            return render_to_response('ballot/ballot.html', {'ballotform': ballotform, 'ballot': ballot, 'cp_slates': get_cp_slates(ballot), 'csac_members': get_csac_members(),  'exec_slates': get_exec_slates(),'is_submitted': True, 'sunetid': sunetid},
                                       context_instance=RequestContext(request))
     
     #WebauthLogout(request) # not necessary.
