@@ -28,7 +28,7 @@ index_filters = {
     'grad': [oe_constants.ISSUE_GSC,oe_constants.ISSUE_EXEC,oe_constants.ISSUE_SPECFEE,oe_constants.ISSUE_REFERENDUM],
 
     'smsa': ['SMSA-P','SMSA-VPO','SMSA-VPA','SMSA-T','SMSA-ClassRep','SMSA-CCAP-PC','SMSA-CCAP-C','SMSA-CCAP-MD','SMSA-CCAP-YO',
-    'SMSA-SC-PC','SMSA-SC-C','SMSA-SC-YO','SMSA-Mentorship-PC','SMSA-Mentorship-C','SMSA-Alumni','SMSA-Prospective']
+    'SMSA-SC-PC','SMSA-SC-C','SMSA-SC-YO','SMSA-Mentorship-PC','SMSA-Mentorship-C','SMSA-Alumni-C','SMSA-Alumni-PC','SMSA-Advisory',]
 }
 
 def vg_redirect(request):
