@@ -242,17 +242,11 @@ function abstain_specialfees(e) {
     <div class="fillin">{{ ballotform.vote_smsa_t }} {{ ballotform.vote_smsa_t.errors }}</div>
 {% endif %}
 
-
-
-
  {% if ballotform.votes_smsa_classrep %}
         <h3>{{ ballot.smsa_class_year.name|cut:"SMSA " }} Class Rep</h3>
      <p>{{ ballotform.votes_smsa_classrep.label }}</p>
         <div class="fillin">{{ ballotform.votes_smsa_classrep }} {{ ballotform.votes_smsa_classrep.errors }}</div>
     {% endif %}
-
-
-
 
 {% if ballotform.vote_smsa_ccap_pc %}
     <h3>CCAP Representative: Pre-Clinical</h3>
@@ -268,7 +262,7 @@ function abstain_specialfees(e) {
 
 
 {% if ballotform.vote_smsa_ccap_md %}
-    <h3>CCAP Representative: MD/PhD</h3>
+    <h3>CCAP Representative: MSTP</h3>
     <div class="fillin">{{ ballotform.vote_smsa_ccap_md }} {{ ballotform.vote_smsa_ccap_md.errors }}</div>
 {% endif %}
 
@@ -291,14 +285,6 @@ function abstain_specialfees(e) {
         <div class="fillin">{{ ballotform.votes_smsa_sc_c }} {{ ballotform.votes_smsa_sc_c.errors }}</div>
     {% endif %}
 
-    {% if ballotform.vote_smsa_sc_yo %}
-        <h3>Social Chair: Year-Off</h3>
-        <div class="fillin">{{ ballotform.vote_smsa_sc_yo }} {{ ballotform.vote_smsa_sc_yo.errors }}</div>
-    {% endif %}
-
-
-
-
 {% if ballotform.vote_smsa_mw_pc %}
     <h3>Mentorship & Wellness Chair: Preclinical</h3>
     <div class="fillin">{{ ballotform.vote_smsa_mw_pc }} {{ ballotform.vote_smsa_mw_pc.errors }}</div>
@@ -309,15 +295,15 @@ function abstain_specialfees(e) {
     <div class="fillin">{{ ballotform.vote_smsa_mw_c }} {{ ballotform.vote_smsa_mw_c.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_alumni %}
-    <h3>Alumni Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_alumni }} {{ ballotform.vote_smsa_alumni.errors }}</div>
+{% if ballotform.vote_smsa_alumni_pc %}
+    <h3>Alumni Chair: Preclinical</h3>
+    <div class="fillin">{{ ballotform.vote_smsa_alumni_pc }} {{ ballotform.vote_smsa_alumni_pc.errors }}</div>
 {% endif %}
 
-{% if ballotform.vote_smsa_prospective %}
-    <h3>Prospective Student Recruitment Chair</h3>
-    <div class="fillin">{{ ballotform.vote_smsa_prospective }} {{ ballotform.vote_smsa_prospective.errors }}</div>
-{% endif %}
+    {% if ballotform.vote_smsa_alumni_c %}
+        <h3>Alumni Chair: Vlinical</h3>
+        <div class="fillin">{{ ballotform.vote_smsa_alumni_c }} {{ ballotform.vote_smsa_alumni_c.errors }}</div>
+    {% endif %}
 
 <hr>
 </section>
