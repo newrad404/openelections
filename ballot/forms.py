@@ -175,6 +175,9 @@ def ballot_form_factory(ballot):
         f = SlateChoiceField(queryset=exec_qs, required=False)
         _BallotForm.base_fields[f_id] = f
         _BallotForm.base_fields[f_id+'_writein'] = forms.CharField(required=False)
+
+    del _BallotForm.base_fields['vote_exec4']
+    del _BallotForm.base_fields['vote_exec4_writein']
     
     all_specfees_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE).filter(public=1).order_by('?')
     _BallotForm.base_fields['votes_specfee_yes'] = forms.ModelMultipleChoiceField(queryset=all_specfees_qs, required=False)

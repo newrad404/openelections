@@ -11,7 +11,6 @@ ASSU Exec:
 1. {{ ballot.vote_exec1 }} (write-in: {{ ballot.vote_exec1_writein|default:"none" }})
 2. {{ ballot.vote_exec2 }} (write-in: {{ ballot.vote_exec2_writein|default:"none" }})
 3. {{ ballot.vote_exec3 }} (write-in: {{ ballot.vote_exec3_writein|default:"none" }})
-4. {{ ballot.vote_exec4 }} (write-in: {{ ballot.vote_exec4_writein|default:"none" }})
 {% if ballot.is_undergrad %}
 ---------------------------------------
 ASSU Undergrad Senate:
