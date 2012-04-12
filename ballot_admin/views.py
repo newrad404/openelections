@@ -115,9 +115,13 @@ def admin_winners(request):
     senate_votes.sort(key=lambda e:e[1],reverse=True)
 
     referendum = {}
-    referendum['a'] = Ballot.objects.filter(vote_referendum='a').count()
-    referendum['b'] = Ballot.objects.filter(vote_referendum='b').count()
-    referendum['c'] = Ballot.objects.filter(vote_referendum='c').count()
+    referendum['a'] = Ballot.objects.filter(vote_survey='a').count()
+    referendum['b'] = Ballot.objects.filter(vote_survey='b').count()
+    referendum['c'] = Ballot.objects.filter(vote_survey='c').count()
+    referendum['d'] = Ballot.objects.filter(vote_survey='d').count()
+    referendum['e'] = Ballot.objects.filter(vote_survey='e').count()
+    referendum['f'] = Ballot.objects.filter(vote_survey='f').count()
+
 
 
     exec_candidates = SenateCandidate.objects.filter(kind=oe_constants.ISSUE_EXEC).filter(public=1)
@@ -158,9 +162,9 @@ def admin_winners(request):
     writein_senate.sort(key=lambda e: e[1])
 
     # SPECIAL FEES
-    num_undergrads = 6858 # includes coterms
-    num_grads = 8444 # includes coterms
-    num_total = 14811
+    num_undergrads = 6921 # includes coterms
+    num_grads = 8548 # includes coterms
+    num_total = 14948
 
 
     undergrad_electorate = Electorate.objects.get(slug='undergrad')
@@ -175,7 +179,7 @@ def admin_winners(request):
         cursor.execute("SELECT COUNT(*) FROM ballot_ballot_votes_specfee_no WHERE specialfeerequest_id = %s", [sf.pk])
         negvotes = cursor.fetchone()[0]
 
-        pct_yes = float(posvotes / (posvotes + negvotes + .00001))
+        pct_yes = float(posvotes / (posvotes + negvotes + .0000001))
         pct_yes_ug = float(posvotes / float(num_undergrads))
         approved = bool(pct_yes > .5 and pct_yes_ug > .15)
         sf_votes.append((sf,posvotes,negvotes,pct_yes,pct_yes_ug,approved))
@@ -471,7 +475,7 @@ def admin_breakdown(request):
     UNDERGRAD_YEARS = ('undergrad-2','undergrad-3','undergrad-4','undergrad-5plus')
     CATEGORIES = ('undergrad','graduate')
 
-    referendum_choices = ('a','b','c')
+    referendum_choices = ('a','b','c','d','e','f')
     results = "REFERENDUM\n"
 
     president_results = "PRESIDENT\n"
@@ -484,7 +488,7 @@ def admin_breakdown(request):
         electorate_pk = Electorate.objects.get(slug=cat).pk
         for choice in referendum_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_referendum = %s AND pop.electorate_id = %s AND ballot.submitted = 1", [choice,electorate_pk])
+            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.submitted = 1", [choice,electorate_pk])
             votes = cursor.fetchone()[0]
             results += "%s\t%s\t%d\n" % (cat,choice,votes)
 
@@ -499,7 +503,7 @@ def admin_breakdown(request):
         district_pk = Electorate.objects.get(slug=district).pk
         for choice in referendum_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_referendum = %s AND pop.electorate_id = %s AND ballot.gsc_district_id = %s AND ballot.submitted = 1", [choice,graduate_pk,district_pk])
+            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.gsc_district_id = %s AND ballot.submitted = 1", [choice,graduate_pk,district_pk])
             votes = cursor.fetchone()[0]
             results += "%s\t%s\t%d\n" % (district,choice,votes)
 
@@ -514,7 +518,7 @@ def admin_breakdown(request):
         year_pk = Electorate.objects.get(slug=year).pk
         for choice in referendum_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_referendum = %s AND pop.electorate_id = %s AND ballot.undergrad_class_year_id = %s AND ballot.submitted = 1", [choice,ug_pk,year_pk])
+            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.undergrad_class_year_id = %s AND ballot.submitted = 1", [choice,ug_pk,year_pk])
             votes = cursor.fetchone()[0]
             results += "%s\t%s\t%d\n" % (year,choice,votes)
 

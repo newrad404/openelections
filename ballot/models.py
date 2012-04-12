@@ -41,7 +41,7 @@ class Ballot(models.Model):
     votes_specfee_ab = models.ManyToManyField(SpecialFeeRequest, related_name='votes_ab', blank=True)
 
 
-    N_EXEC_VOTES = 4
+    N_EXEC_VOTES = 3
     vote_exec1 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec1')
     vote_exec2 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec2')
     vote_exec3 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec3')
