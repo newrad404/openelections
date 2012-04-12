@@ -57,7 +57,10 @@ def index(request):
 
     record = VoteRecord()
     record.sunetid = sunetid
-    record.ip = request.META['REMOTE_ADDR']
+    if 'HTTP_X_FORWARDED_FOR' in request.META:
+        record.ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        record.ip = request.META['REMOTE_ADDR']
     record.datetime = datetime.now()
     record.type = "start"
     record.save()
@@ -77,7 +80,10 @@ def choose_ballot(request):
             form.save()
             record = VoteRecord()
             record.sunetid = sunetid
-            record.ip = request.META['REMOTE_ADDR']
+            if 'HTTP_X_FORWARDED_FOR' in request.META:
+                record.ip = request.META['HTTP_X_FORWARDED_FOR']
+            else:
+                record.ip = request.META['REMOTE_ADDR']
             record.datetime = datetime.now()
             record.type = "choose"
             record.details = "chose " + ballot.get_electorate_slugs()
