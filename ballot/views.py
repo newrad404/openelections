@@ -109,7 +109,10 @@ def vote_all(request):
         if ballotform.is_valid():
             record = VoteRecord()
             record.sunetid = sunetid
-            record.ip = request.META['REMOTE_ADDR']
+            if 'HTTP_X_FORWARDED_FOR' in request.META:
+                record.ip = request.META['HTTP_X_FORWARDED_FOR']
+            else:
+                record.ip = request.META['REMOTE_ADDR']
             record.datetime = datetime.now()
             record.type = "success-vote"
             record.save()
@@ -123,7 +126,10 @@ def vote_all(request):
         else:
             record = VoteRecord()
             record.sunetid = sunetid
-            record.ip = request.META['REMOTE_ADDR']
+            if 'HTTP_X_FORWARDED_FOR' in request.META:
+                record.ip = request.META['HTTP_X_FORWARDED_FOR']
+            else:
+                record.ip = request.META['REMOTE_ADDR']
             record.datetime = datetime.now()
             record.type = "failed-vote"
             record.details = str(ballotform.errors)
