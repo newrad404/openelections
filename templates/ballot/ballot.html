@@ -163,10 +163,10 @@ $(window).load(function() {
 
 function abstain_specialfees(e) {
     $('input[type=radio]').each(function(){
-        var specfee_id = $(this).attr('id').match(/^id_vote_specfee_(\d{1,5})_0$/)
+        var specfee_id = $(this).attr('id').match(/^id_vote_specfee_(\d{1,5})_2$/)
      if(specfee_id != null && specfee_id[1] >= 0
+             && !$('#id_vote_specfee_' + specfee_id[1] + "_0").attr('checked')
              && !$('#id_vote_specfee_' + specfee_id[1] + "_1").attr('checked')
-             && !$('#id_vote_specfee_' + specfee_id[1] + "_2").attr('checked')
              ) {
           $(this).attr('checked',true)
      }
