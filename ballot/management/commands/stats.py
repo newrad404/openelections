@@ -18,17 +18,25 @@ class Command(LabelCommand):
 
         print "Time\tTotal vote entries\tUndergrad vote entries\tGrad vote entries\tCoterm vote entries\tFrosh vote entries\tSophomore votes\tJunior vote entries\tSenior vote entries\tInvalid vote entries"
 
-        while currenttime < endtime:
-            votes = VoteRecord.objects.filter(type='success-vote',datetime__lte=currenttime)
-            total_votes = len(votes)
+        total_votes = 0
+        frosh_votes = 0
+        soph_votes = 0
+        jun_votes = 0
+        sen_votes = 0
+        grad_votes = 0
+        invalid_votes = 0
+        coterm_votes = 0
 
-            frosh_votes = 0
-            soph_votes = 0
-            jun_votes = 0
-            sen_votes = 0
-            grad_votes = 0
-            invalid_votes = 0
-            coterm_votes = 0
+        firstTime = True
+
+        while currenttime < endtime:
+            if not firstTime:
+                votes = VoteRecord.objects.filter(type='success-vote',datetime__lte=currenttime,datetime__gt=currenttime - granularity)
+            else:
+                votes = VoteRecord.objects.filter(type='success-vote',datetime__lte=currenttime)
+                firstTime = False
+
+            total_votes += len(votes)
 
             for vote in votes:
                 if vote.sunetid not in students:
