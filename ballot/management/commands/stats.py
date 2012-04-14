@@ -1,20 +1,34 @@
 import csv
 import datetime
+from ballot.models import Ballot
+from openelections.issues.models import Issue
 from openelections.ballot.models import VoteRecord
 from django.core.management.base import LabelCommand
 
 
 class Command(LabelCommand):
     def handle_label(self, label, **options):
-        self.getTimeSeriesData()
+        #self.getTimeSeriesData()
+        self.getExecSlateData()
 
-    def getTimeSeriesData(self):
+    def getExecSlateData(self):
+        print "---- STEWART ----"
+        self.getTimeSeriesData("assu")
+        print "---- ZIMBROFF ----"
+        self.getTimeSeriesData("zimbroff-wagstaff")
+
+    def getTimeSeriesData(self,slateName=None):
         students = getStudentDict()
 
         starttime = datetime.datetime(2012,4,12)
         granularity = datetime.timedelta(minutes=2)
         endtime = datetime.datetime(2012,4,14)
         currenttime = starttime
+
+        slate = None
+        if slateName:
+            slate = Issue.objects.get(slug=slateName)
+            print slate
 
         print "Time\tTotal vote entries\tUndergrad vote entries\tGrad vote entries\tCoterm vote entries\tFrosh vote entries\tSophomore votes\tJunior vote entries\tSenior vote entries\tInvalid vote entries"
 
@@ -28,6 +42,7 @@ class Command(LabelCommand):
         coterm_votes = 0
 
         firstTime = True
+        considered = set()
 
         while currenttime < endtime:
             if not firstTime:
@@ -36,12 +51,27 @@ class Command(LabelCommand):
                 votes = VoteRecord.objects.filter(type='success-vote',datetime__lte=currenttime)
                 firstTime = False
 
-            total_votes += len(votes)
-
             for vote in votes:
+                if vote.sunetid in considered:
+                    continue
+                else:
+                    considered.add(vote.sunetid)
+                if slate:
+                    ballot = Ballot.objects.get(voter_id=vote.sunetid)
+                    if ballot.vote_exec1 is None:
+                        continue
+                    elif ballot.vote_exec1.pk == slate.pk:
+                        pass
+                    else:
+                        continue
+
+                total_votes += 1
+                print vote.sunetid
+
                 if vote.sunetid not in students:
                     invalid_votes += 1
                     continue
+
 
                 if 'undergrad-2' in students[vote.sunetid]:
                     frosh_votes += 1
