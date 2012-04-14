@@ -8,8 +8,12 @@ from django.core.management.base import LabelCommand
 
 class Command(LabelCommand):
     def handle_label(self, label, **options):
-        #self.getTimeSeriesData()
-        self.getExecSlateData()
+        if label == "time":
+            self.getTimeSeriesData()
+        elif label == "execs":
+            self.getExecSlateData()
+        else:
+            print "wat?"
 
     def getExecSlateData(self):
         print "---- STEWART ----"
@@ -56,6 +60,7 @@ class Command(LabelCommand):
                     continue
                 else:
                     considered.add(vote.sunetid)
+
                 if slate:
                     ballot = Ballot.objects.get(voter_id=vote.sunetid)
                     if ballot.vote_exec1 is None:
@@ -66,7 +71,6 @@ class Command(LabelCommand):
                         continue
 
                 total_votes += 1
-                print vote.sunetid
 
                 if vote.sunetid not in students:
                     invalid_votes += 1
