@@ -16,7 +16,7 @@ class Command(LabelCommand):
         endtime = datetime.datetime(2012,4,14)
         currenttime = starttime
 
-        print "Time\tTotal vote entries\tUndergrad vote entries\tGrad vote entries\tFrosh vote entries\tSophomore votes\tJunior vote entries\tSenior vote entries"
+        print "Time\tTotal vote entries\tUndergrad vote entries\tGrad vote entries\tCoterm vote entries\tFrosh vote entries\tSophomore votes\tJunior vote entries\tSenior vote entries\tInvalid vote entries"
 
         while currenttime < endtime:
             votes = VoteRecord.objects.filter(type='success-vote',datetime__lte=currenttime)
@@ -28,6 +28,7 @@ class Command(LabelCommand):
             sen_votes = 0
             grad_votes = 0
             invalid_votes = 0
+            coterm_votes = 0
 
             for vote in votes:
                 if vote.sunetid not in students:
@@ -44,18 +45,20 @@ class Command(LabelCommand):
                     sen_votes += 1
                 if 'graduate' in students[vote.sunetid]:
                     grad_votes += 1
+                if 'coterm' in students[vote.sunetid]:
+                    coterm_votes += 1
 
             undergrad_votes = frosh_votes + soph_votes + jun_votes + sen_votes
-            print "%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d" % (currenttime,total_votes,undergrad_votes,grad_votes,frosh_votes,soph_votes,jun_votes,sen_votes)
+            print "%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d" % (currenttime,total_votes,undergrad_votes,grad_votes,coterm_votes,frosh_votes,soph_votes,jun_votes,sen_votes,invalid_votes)
 
             currenttime += granularity
 
 
 
 assu_pops = {
-    '1- Undergraduate Student': ['undergrad'],
-    '2 - Coterm': ['undergrad','graduate'],
-    '3 - Graduate Student': ['graduate'],
+    '1- Undergraduate Student': 'undergrad',
+    '2 - Coterm': 'coterm',
+    '3 - Graduate Student': 'graduate',
     }
 class_years = {
     '5 - Fifth year or more Senior': 'undergrad-5plus',
