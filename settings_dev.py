@@ -6,16 +6,17 @@ TEMPLATE_DEBUG = DEBUG
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dev_openelections',
+        'NAME': 'openelections',
         'USER': 'root',
-        'PASSWORD': 'hello1'
+        'PASSWORD': 'dh'
     }
 }
 
-MEDIA_ROOT = '/Users/trusheim/Desktop/openelections/public/media'
-BALLOT_ROOT = '/Users/trusheim/Desktop/openelections/ballots'
-LOG_ROOT = '/Users/trusheim/Desktop/openelections/logs'
-STUDENT_CSV = '/Users/stephen/Desktop/openelections/students.csv'
+ROOT = '/home/daniel/openelections_ballot/openelections/'
+MEDIA_ROOT = ROOT + 'public/media'
+BALLOT_ROOT = ROOT + 'public/ballots'
+LOG_ROOT = ROOT + '/logs'
+STUDENT_CSV = ROOT + 'students.csv'
 
 
 

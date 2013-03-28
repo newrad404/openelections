@@ -111,7 +111,7 @@ label {
     </div></div>
 </div>
 
-<script language="javascript" type="text/javascript" src="http://voterguide.stanford.edu/media/2012_candidate_statements.js">
+<script language="javascript" type="text/javascript" src="/media/js/2013_candidate_statements.js">
 </script>
 <script language="javascript">
 function getIssueElemPk(e) {
@@ -217,6 +217,7 @@ function abstain_specialfees(e) {
 
 <form id="ballot" method="post" action="{% url ballot.views.vote_all %}">
 
+{% comment %}
 {% if ballotform.smsa %}
 <section class="candidates">
 
@@ -308,6 +309,7 @@ function abstain_specialfees(e) {
 <hr>
 </section>
 {% endif %}
+{% endcomment %}
 
 <section class="slates">
     <h2>ASSU Executive</h2>

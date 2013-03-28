@@ -115,12 +115,12 @@ def admin_winners(request):
     senate_votes.sort(key=lambda e:e[1],reverse=True)
 
     referendum = {}
-    referendum['a'] = Ballot.objects.filter(vote_survey='a').count()
-    referendum['b'] = Ballot.objects.filter(vote_survey='b').count()
-    referendum['c'] = Ballot.objects.filter(vote_survey='c').count()
-    referendum['d'] = Ballot.objects.filter(vote_survey='d').count()
-    referendum['e'] = Ballot.objects.filter(vote_survey='e').count()
-    referendum['f'] = Ballot.objects.filter(vote_survey='f').count()
+    #referendum['a'] = Ballot.objects.filter(vote_survey='a').count()
+    #referendum['b'] = Ballot.objects.filter(vote_survey='b').count()
+    #referendum['c'] = Ballot.objects.filter(vote_survey='c').count()
+    #referendum['d'] = Ballot.objects.filter(vote_survey='d').count()
+    #referendum['e'] = Ballot.objects.filter(vote_survey='e').count()
+    #referendum['f'] = Ballot.objects.filter(vote_survey='f').count()
 
 
 
@@ -486,11 +486,11 @@ def admin_breakdown(request):
 
     for cat in CATEGORIES:
         electorate_pk = Electorate.objects.get(slug=cat).pk
-        for choice in referendum_choices:
-            cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.submitted = 1", [choice,electorate_pk])
-            votes = cursor.fetchone()[0]
-            results += "%s\t%s\t%d\n" % (cat,choice,votes)
+        #for choice in referendum_choices:
+        #    cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
+        #    ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.submitted = 1", [choice,electorate_pk])
+        #    votes = cursor.fetchone()[0]
+        #    results += "%s\t%s\t%d\n" % (cat,choice,votes)
 
         for pk,name in prez_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
@@ -501,11 +501,11 @@ def admin_breakdown(request):
     for district in GSC_DISTRICTS:
         graduate_pk = Electorate.objects.get(slug='graduate').pk
         district_pk = Electorate.objects.get(slug=district).pk
-        for choice in referendum_choices:
-            cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.gsc_district_id = %s AND ballot.submitted = 1", [choice,graduate_pk,district_pk])
-            votes = cursor.fetchone()[0]
-            results += "%s\t%s\t%d\n" % (district,choice,votes)
+        #for choice in referendum_choices:
+        #    cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
+        #    ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.gsc_district_id = %s AND ballot.submitted = 1", [choice,graduate_pk,district_pk])
+        #    votes = cursor.fetchone()[0]
+        #    results += "%s\t%s\t%d\n" % (district,choice,votes)
 
         for pk,name in prez_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
@@ -516,11 +516,11 @@ def admin_breakdown(request):
     for year in UNDERGRAD_YEARS:
         ug_pk = Electorate.objects.get(slug='undergrad').pk
         year_pk = Electorate.objects.get(slug=year).pk
-        for choice in referendum_choices:
-            cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
-            ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.undergrad_class_year_id = %s AND ballot.submitted = 1", [choice,ug_pk,year_pk])
-            votes = cursor.fetchone()[0]
-            results += "%s\t%s\t%d\n" % (year,choice,votes)
+        #for choice in referendum_choices:
+        #    cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \
+        #    ballot.id WHERE ballot.vote_survey = %s AND pop.electorate_id = %s AND ballot.undergrad_class_year_id = %s AND ballot.submitted = 1", [choice,ug_pk,year_pk])
+        #    votes = cursor.fetchone()[0]
+        #    results += "%s\t%s\t%d\n" % (year,choice,votes)
 
         for pk,name in prez_choices:
             cursor.execute("SELECT COUNT(*) FROM ballot_ballot AS ballot INNER JOIN ballot_ballot_assu_populations AS pop ON pop.ballot_id = \

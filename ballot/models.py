@@ -45,13 +45,13 @@ class Ballot(models.Model):
     vote_exec1 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec1')
     vote_exec2 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec2')
     vote_exec3 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec3')
-    vote_exec4 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec4')
+    #vote_exec4 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec4')
     #vote_exec5 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec5')
     #vote_exec6 = models.ForeignKey(ExecutiveSlate, blank=True, null=True, related_name='votes_exec6')
     vote_exec1_writein = models.CharField(max_length=75, blank=True)
     vote_exec2_writein = models.CharField(max_length=75, blank=True)
     vote_exec3_writein = models.CharField(max_length=75, blank=True)
-    vote_exec4_writein = models.CharField(max_length=75, blank=True)
+    #vote_exec4_writein = models.CharField(max_length=75, blank=True)
     #vote_exec5_writein = models.CharField(max_length=75, blank=True)
     #vote_exec6_writein = models.CharField(max_length=75, blank=True)
 
@@ -64,10 +64,10 @@ class Ballot(models.Model):
     vote_classpres1_writein = models.CharField(max_length=75, blank=True)
     vote_classpres2_writein = models.CharField(max_length=75, blank=True)
     vote_classpres3_writein = models.CharField(max_length=75, blank=True)
-    #vote_classpres4_writein = models.CharField(max_length=75, blank=True)
-    #vote_classpres5_writein = models.CharField(max_length=75, blank=True)
+    vote_classpres4_writein = models.CharField(max_length=75, blank=True)
+    vote_classpres5_writein = models.CharField(max_length=75, blank=True)
 
-    vote_survey = models.CharField(max_length=1,blank=True,null=True)
+    #vote_survey = models.CharField(max_length=1,blank=True,null=True)
 
     vote_smsa_pres = models.ForeignKey(SMSACandidate, related_name='votes_smsa_pres', blank=True, null=True)
     vote_smsa_vpo = models.ForeignKey(SMSACandidate, related_name='votes_smsa_vpo', blank=True, null=True)
@@ -86,12 +86,12 @@ class Ballot(models.Model):
 
     vote_smsa_mw_pc = models.ForeignKey(SMSACandidate, related_name='votes_smsa_mw_pc', blank=True, null=True)
     vote_smsa_mw_c = models.ForeignKey(SMSACandidate, related_name='votes_smsa_mw_c', blank=True, null=True)
-    vote_smsa_alumni_pc = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_pc', blank=True, null=True)
-    vote_smsa_alumni_c = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_c', blank=True, null=True)
+    #vote_smsa_alumni_pc = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_pc', blank=True, null=True)
+    #vote_smsa_alumni_c = models.ForeignKey(SMSACandidate, related_name='votes_smsa_alumni_c', blank=True, null=True)
 
     def needs_ballot_choice(self):
         if not self.is_grad() and not self.is_undergrad():
-            return 'You must select either "Grad" or "Undergrad," or both.'
+            return 'You must select either "Graduate" or "Undergraduate," or both.'
         if self.is_grad():
             if not self.gsc_district:
                 return 'You must select your GSC district, or uncheck "Grad" if you are not a grad student.'

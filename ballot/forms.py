@@ -176,8 +176,8 @@ def ballot_form_factory(ballot):
         _BallotForm.base_fields[f_id] = f
         _BallotForm.base_fields[f_id+'_writein'] = forms.CharField(required=False)
 
-    del _BallotForm.base_fields['vote_exec4']
-    del _BallotForm.base_fields['vote_exec4_writein']
+    #del _BallotForm.base_fields['vote_exec4']
+    #del _BallotForm.base_fields['vote_exec4_writein']
     
     all_specfees_qs = SpecialFeeRequest.objects.filter(kind=c.ISSUE_SPECFEE).filter(public=1).order_by('?')
     _BallotForm.base_fields['votes_specfee_yes'] = forms.ModelMultipleChoiceField(queryset=all_specfees_qs, required=False)
@@ -228,14 +228,14 @@ def ballot_form_factory(ballot):
             ('f', "f. Not Applicable (e.g. I don't have an advisor)"),
 
             )
-        _BallotForm.base_fields['vote_survey'] = forms.ChoiceField(choices=surveychoices, label="Choices", required=False, initial=ballot.vote_survey, widget=forms.RadioSelect)
+        #_BallotForm.base_fields['vote_survey'] = forms.ChoiceField(choices=surveychoices, label="Choices", required=False, initial=ballot.vote_survey, widget=forms.RadioSelect)
 
     else:
         del _BallotForm.base_fields['votes_gsc_district']
         del _BallotForm.base_fields['votes_gsc_district_writein']
         del _BallotForm.base_fields['votes_gsc_atlarge']
         del _BallotForm.base_fields['votes_gsc_atlarge_writein']
-        del _BallotForm.base_fields['vote_survey']
+        #del _BallotForm.base_fields['vote_survey']
     
     if ballot.is_smsa():
         _BallotForm.smsa = True
@@ -380,4 +380,3 @@ class SMSACandidatesChoiceField(forms.ModelChoiceField):
     
     def label_from_instance(self, instance):
         return instance.ballot_name()
-

@@ -13,22 +13,21 @@ gsc_districts = {
     'GSB': 'gsc-gsb',
 }
 assu_pops = {
-    '1- Undergraduate Student': ['undergrad'],
-    '2 - Coterm': ['undergrad','graduate'],
-    '3 - Graduate Student': ['graduate'],
+    'Undergrad': ['undergrad'],
+    'Coterm': ['undergrad','graduate'],
+    'Grad': ['graduate'],
 }
+
 class_years = {
-    '5 - Fifth year or more Senior': 'undergrad-5plus',
-    '4 - Senior Class Affiliation': 'undergrad-5plus',
-    '3 - Junior Class Affiliation': 'undergrad-4',
-    '2 - Sophomore Class Affiliation': 'undergrad-3',
-    '1 - Freshman Class Affiliation': 'undergrad-2',
+    'Senior': 'undergrad-5plus',
+    'Junior': 'undergrad-4',
+    'Sophomore': 'undergrad-3',
+    'Freshman': 'undergrad-2',
 }
 
 def get_ballot(sunetid):
     b, created = Ballot.get_or_create_by_sunetid(sunetid)
     return b
-
 def elec(slug):
     if slug is None: return None
     return Electorate.objects.get(slug=slug)
@@ -43,11 +42,12 @@ class Command(LabelCommand):
         for row in students:
             sunetid = row['SUNetID']
             b = get_ballot(sunetid)
-            groups = map(str.strip, row['Class Level'].split(','))
-            for g in groups:
-                if g in assu_pops:
-                    b.assu_populations = map(elec, assu_pops[g])
-                if g in class_years:
-                    b.undergrad_class_year = elec(class_years[g])
+            class_level = row['Class Level'].strip()
+            if class_level in class_years:
+                b.undergrad_class_year = elec(class_years[class_level])
+                b.assu_populations = map(elec, assu_pops['Undergrad'])
+            else:
+                b.assu_populations = map(elec, assu_pops['Grad'])
+
             print "%s\t%s" % (sunetid, b)
             b.save()
