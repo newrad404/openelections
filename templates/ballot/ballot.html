@@ -1,4 +1,4 @@
-{% extends "ballot/base-ballot.html" %}
+\{% extends "ballot/base-ballot.html" %}
 {% load issue_extras %}
 
 {% block content %}
@@ -525,14 +525,11 @@ function abstain_specialfees(e) {
 
 {% if ballotform.vote_survey %}
 <section class="referenda">
-    <h2>Survey</h2>
+    <h2>Referendum</h2>
 
-    <p class="has_stmt" data-pk=""><strong>Advisory Survey from the Graduate Student Council</strong><br/>
+    <p class="has_stmt" data-pk=""><strong>Please vote on the proposed amendment to the ASSU constitution.</strong><br/>
         <br />
-
-        <strong>Please express your opinion about the following:</strong>
-        I have a healthy advisor-advisee relationship, and I feel well-mentored, encouraged, motivated and
-        intellectually supported by my primary academic and/or research advisor.
+        The amendment would reserve SUMMARY HERE                
     </p>
     <div class="vote fillin">
         {{ ballotform.vote_survey }}

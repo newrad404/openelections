@@ -67,7 +67,7 @@ class Ballot(models.Model):
     vote_classpres4_writein = models.CharField(max_length=75, blank=True)
     vote_classpres5_writein = models.CharField(max_length=75, blank=True)
 
-    #vote_survey = models.CharField(max_length=1,blank=True,null=True)
+    vote_survey = models.CharField(max_length=1,blank=True,null=True)
 
     vote_smsa_pres = models.ForeignKey(SMSACandidate, related_name='votes_smsa_pres', blank=True, null=True)
     vote_smsa_vpo = models.ForeignKey(SMSACandidate, related_name='votes_smsa_vpo', blank=True, null=True)

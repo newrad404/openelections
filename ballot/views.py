@@ -17,8 +17,6 @@ def get_voter_id(request):
     return make_voter_id(request.user.webauth_username)
 
 def make_issues_json(request):
-#    return ""
-
     issues = {}
     for o in Issue.objects.all():
         issues[str(o.pk)] = { 'statement': render_to_string('ballot/info.html', {'issue': o.get_typed(), 'detail': True, 'hidepdfs': True}) }

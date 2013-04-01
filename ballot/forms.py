@@ -152,10 +152,10 @@ def ballot_form_factory(ballot):
             
             return self.cleaned_data
 
-        def clean_vote_referendum(self):
-            if not self.cleaned_data['vote_referendum'] and self.is_grad():
-                raise forms.ValidationError("You must submit a vote on the advisor survey, or choose to abstain.")
-            return self.cleaned_data['vote_referendum']
+        def clean_vote_survey(self):
+            if not self.cleaned_data['vote_survey']:
+                raise forms.ValidationError("You must vote on the referendum, or choose to abstain.")
+            return self.cleaned_data['vote_survey']
         
         def save(self, commit=True):            
             #print "cd: %s" % self.cleaned_data
@@ -200,11 +200,22 @@ def ballot_form_factory(ballot):
             f_id = 'vote_classpres%d' % j
             del _BallotForm.base_fields[f_id]
             del _BallotForm.base_fields[f_id+'_writein']
+        
+         ## referendum: Measure A
+        surveychoices = (
+            ('y', "Yes"),
+            ('n', "No"),
+            ('a', "Abstain"),
+
+            )
+        _BallotForm.base_fields['vote_survey'] = forms.ChoiceField(choices=surveychoices, label="Choices", required=False, initial=ballot.vote_survey, widget=forms.RadioSelect)
+
     else:
         del _BallotForm.base_fields['votes_senate']
         del _BallotForm.base_fields['vote_classpres1']
         del _BallotForm.base_fields['vote_classpres2']
         del _BallotForm.base_fields['vote_classpres3']
+        del _BallotForm.base_fields['vote_survey']
         #del _BallotForm.base_fields['vote_classpres4']
         #del _BallotForm.base_fields['vote_classpres5']
 
@@ -218,24 +229,13 @@ def ballot_form_factory(ballot):
         gsc_atlarge_qs = GSCCandidate.objects.filter(kind=c.ISSUE_GSC).order_by('?').all()
         _BallotForm.base_fields['votes_gsc_atlarge'] = GSCAtLargeCandidatesField(queryset=gsc_atlarge_qs, required=False)
         _BallotForm.base_fields['votes_gsc_atlarge_writein'] = forms.CharField(required=False, widget=forms.Textarea(attrs=dict(rows=2, cols=40)))
-        ## referendum: Measure A
-        surveychoices = (
-            ('a', "a. Strongly agree."),
-            ('b', "b. Agree some of the time."),
-            ('c', "c. Neutral."),
-            ('d', "d. Disagree some of the time."),
-            ('e', "e. Strongly disagree."),
-            ('f', "f. Not Applicable (e.g. I don't have an advisor)"),
-
-            )
-        #_BallotForm.base_fields['vote_survey'] = forms.ChoiceField(choices=surveychoices, label="Choices", required=False, initial=ballot.vote_survey, widget=forms.RadioSelect)
+        
 
     else:
         del _BallotForm.base_fields['votes_gsc_district']
         del _BallotForm.base_fields['votes_gsc_district_writein']
         del _BallotForm.base_fields['votes_gsc_atlarge']
         del _BallotForm.base_fields['votes_gsc_atlarge_writein']
-        #del _BallotForm.base_fields['vote_survey']
     
     if ballot.is_smsa():
         _BallotForm.smsa = True

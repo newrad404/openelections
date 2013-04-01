@@ -51,8 +51,8 @@ NO on Special Fee requests:
 ABSTAIN on all Special Fee requests not listed
 {% if ballot.is_grad %}
 ---------------------------------------
-Graduate Student Council Advisory Question
-{% if ballot.vote_survey == 'a' %}a. Strongly agree.{% endif %}{% if ballot.vote_survey == 'b' %}b. Agree some of the time.{% endif %}{% if ballot.vote_survey == 'c' %}c. I choose to abstain.{% endif %}{% if ballot.vote_survey == 'd' %}d. Disagree some of the time.{% endif %}{% if ballot.vote_survey == 'e' %}e. Strongly disagree.{% endif %}{% if ballot.vote_survey == 'f' %}f.Not Applicable (e.g. I don't have an advisor){% endif %}
+Undergraduate, Constitutional Amendment Referendum
+{% if ballot.vote_survey == 'y' %}Yes{% endif %}{% if ballot.vote_survey == 'n' %}No{% endif %}{% if ballot.vote_survey == 'a' %}Abstain{% endif %}
 {% endif %}
 {% if ballot.is_smsa %}
 ---------------------------------------
@@ -63,4 +63,3 @@ Your SMSA votes have been recorded.
 IP address: {{ request.META.REMOTE_ADDR }}
 Last updated: {{ ballot.date_updated }}
 =======================================
-
