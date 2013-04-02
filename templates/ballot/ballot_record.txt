@@ -49,9 +49,9 @@ NO on Special Fee requests:
 {% empty %}(none){% endfor %}
 
 ABSTAIN on all Special Fee requests not listed
-{% if ballot.is_grad %}
+{% if ballot.is_undergrad %}
 ---------------------------------------
-Undergraduate, Constitutional Amendment Referendum
+Undergraduate, Constitutional Amendment
 {% if ballot.vote_survey == 'y' %}Yes{% endif %}{% if ballot.vote_survey == 'n' %}No{% endif %}{% if ballot.vote_survey == 'a' %}Abstain{% endif %}
 {% endif %}
 {% if ballot.is_smsa %}

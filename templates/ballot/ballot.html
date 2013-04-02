@@ -95,6 +95,15 @@ label {
     padding:5px;
     line-height:160%;
 }
+
+.num_list ol, .num_list li {
+    list-style-type: decimal;
+}
+
+.bullet_list ul, .bullet_list li {
+    list-style-type: circle;
+}
+
 </style>
 
 <div id="stmt" style="display:none">
@@ -525,12 +534,38 @@ function abstain_specialfees(e) {
 
 {% if ballotform.vote_survey %}
 <section class="referenda">
-    <h2>Referendum</h2>
+    <h2>Amendment</h2>
 
-    <p class="has_stmt" data-pk=""><strong>Please vote on the proposed amendment to the ASSU constitution.</strong><br/>
+    <div class="has_stmt" data-pk="139"><strong>Please vote on the proposed amendment to the ASSU constitution.</strong><br/>
         <br />
-        The amendment would reserve SUMMARY HERE                
-    </p>
+        <i>Current ASSU Constitution, Article II &sect;3.A reads as follows:</i>
+<ol class="num_list	">
+<li>The fifteen members of the Undergraduate Senate shall be elected from and shall represent the undergraduate population.</li>
+<li>Each member of the undergraduate population voting may cast one vote for as many Undergraduate Senate seats as are assigned to the undergraduate population.</li>
+<li>The candidates equal in number to the number of available Undergraduate Senate seats who receive the largest number of votes shall become members of the Undergraduate Senate.</li>
+<li>If at any time more than one-third of the Undergraduate Senate seats are vacant, the Undergraduate Senate shall immediately call a special election to fill all vacant seats.</li>
+</ol>
+
+<br/>
+
+<i>The ASSU Constitution, Article &sect;3.A is amended to read:</i>
+
+<ol class="num_list">
+<li>The fifteen members of the Undergraduate Senate shall be elected from and shall represent the undergraduate population.</li>
+<li>Each member of the undergraduate population voting may cast one vote for as many Undergraduate Senate seats as are assigned to the undergraduate population.</li>
+<li>The upperclass candidates who receive the highest number of votes among all upperclass candidates shall become members of the Undergraduate Senate.
+<ul class="bullet_list">
+<li>This section shall only apply to Undergraduate Senate elections in which all fifteen seats are available for election.</li>
+<li>An upperclass candidate is a candidate who anticipates holding academic status as an Undergraduate Junior or higher, as defined by the University Registrar, at the beginning of Fall Quarter of the year of the majority of his/her term. In case of dispute, decisions regarding whether a candidate is an upperclass candidate shall be made by the Elections Commission.</li>
+<li>In order to be elected under this section, upperclass candidates must have petitioned for the required amount of signatures as set by the Elections Commission.</li>
+<li>The number of upperclass candidates elected under this section shall be defined in the Undergraduate Senate By-Laws. The resolution of ties shall also be set in the Undergraduate Senate By-Laws.</li>
+<li>Any upperclass candidates who are not elected under this section may be elected under section 4.</li>
+</ul>
+</li>
+<li>After the upperclass candidates have been seated, all remaining available seats shall be filled by the remaining candidates who receive the largest number of votes, up to the maximum fifteen members.</li>
+<li>If at any time more than one-third of the Undergraduate Senate seats are vacant, the Undergraduate Senate shall immediately call a special election to fill all vacant seats</li>
+</ol><br/>
+    </div>
     <div class="vote fillin">
         {{ ballotform.vote_survey }}
         {{ ballotform.vote_survey.errors }}
