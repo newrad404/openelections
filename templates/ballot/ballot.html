@@ -158,6 +158,12 @@ $(window).load(function() {
     $('#stmt_toggle_hide').click(function () { $('#stmt_toggle_hide').hide(); $('#stmt_toggle_show').show(); })
     $('#stmt_toggle_show').click(function () { $('#stmt_toggle_hide').show(); $('#stmt_toggle_show').hide(); })
     
+    $('.slates .fillin').bind("mouseenter",
+         function() {
+            $('#stmt_body').html("");
+         }
+    );
+
     $('label, .has_stmt').bind("mouseenter click",
         function() {
             var stmt = issueTooltipBody(this);
@@ -167,12 +173,6 @@ $(window).load(function() {
         }
     );
 
-    $('label, .has_stmt').bind("mouseleave",
-         function() {
-            $('#stmt_body').html("");
-         }
-    );
-    
     $('#stmt_body').css('height', $(window).height() - $('#stmt_header').outerHeight());
 });
 
@@ -536,8 +536,6 @@ function abstain_specialfees(e) {
 <p><strong style="color:red;">You must submit a vote or choose to abstain on all Special Fees.</strong><br/><input type='button' onclick="abstain_specialfees(event)" value="Abstain on all issues currently without a vote" /></p>
 </section>
 
-<br/>
-
 {% if ballotform.vote_survey %}
 <section class="referenda">
     <h2>Amendment</h2>
@@ -570,7 +568,7 @@ function abstain_specialfees(e) {
 </li>
 <li>After the upperclass candidates have been seated, all remaining available seats shall be filled by the remaining candidates who receive the largest number of votes, up to the maximum fifteen members.</li>
 <li>If at any time more than one-third of the Undergraduate Senate seats are vacant, the Undergraduate Senate shall immediately call a special election to fill all vacant seats</li>
-</ol><br/>
+</ol>
     </div>
     <div class="vote fillin">
         {{ ballotform.vote_survey }}
