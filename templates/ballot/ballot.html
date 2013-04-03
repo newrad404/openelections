@@ -1,4 +1,4 @@
-\{% extends "ballot/base-ballot.html" %}
+{% extends "ballot/base-ballot.html" %}
 {% load issue_extras %}
 
 {% block content %}
@@ -165,6 +165,12 @@ $(window).load(function() {
                 $('#stmt_body').html(stmt);
             }
         }
+    );
+
+    $('label, .has_stmt').bind("mouseleave",
+         function() {
+            $('#stmt_body').html("");
+         }
     );
     
     $('#stmt_body').css('height', $(window).height() - $('#stmt_header').outerHeight());
